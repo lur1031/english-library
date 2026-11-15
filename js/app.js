@@ -63,6 +63,9 @@
     clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2200);
   }
 
+  /* ======================= Pet ======================= */
+  const Pet = window.PetModule({ Store, toast, esc, L });
+
   /* ======================= Speech ======================= */
   const Speech = {
     ok: 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window,
@@ -159,13 +162,15 @@
   /* ======================= Router ======================= */
   const routes = {
     home: renderHome,
-    library: renderLibrary
+    library: renderLibrary,
+    pet: () => Pet.renderPage(app)
   };
   function route() {
     const h = decodeURIComponent(location.hash.slice(1)) || 'home';
     Reader.teardown();
+    $$('.reward-pop').forEach(el => el.remove());
     document.body.classList.remove('reading');
-    $$('.nav a').forEach(a => a.classList.toggle('active', a.dataset.nav === (h === 'library' ? 'library' : (h.startsWith('read-') ? '' : 'home'))));
+    $$('.nav a').forEach(a => a.classList.toggle('active', a.dataset.nav === (h === 'library' || h === 'pet' ? h : (h.startsWith('read-') ? '' : 'home'))));
     if (routes[h]) routes[h]();
     else if (h.startsWith('cat-') && L.category(h.slice(4))) renderCategory(h.slice(4));
     else if (h.startsWith('read-') && L.story(h.slice(5))) Reader.open(L.story(h.slice(5)));
@@ -189,6 +194,8 @@
           <p>책장에서 마음에 드는 이야기를 꺼내 보세요. 문장을 누르면 해석과 원어민 음성이 함께 펼쳐져요.</p>
           <div class="hero-deco"><span></span><span></span><span></span></div>
         </section>
+
+        ${Pet.homeCard()}
 
         <div class="stats">
           <div class="stat"><b>${L.stories.length}</b><span>도서관의 이야기</span></div>
@@ -451,7 +458,7 @@
       $('#markDone').addEventListener('click', () => {
         const rec = Store.rec(this.story.id);
         if (rec.status === 'done') { rec.status = 'reading'; rec.progress = 90; toast('읽는 중으로 되돌렸어요'); }
-        else { rec.status = 'done'; rec.progress = 100; toast('완독을 축하해요! 아래 학습 노트로 복습해 볼까요? ✦'); }
+        else { rec.status = 'done'; rec.progress = 100; Store.save(); Pet.onComplete(this.story); }
         Store.save(); this.renderFinish();
       });
     }
@@ -642,14 +649,18 @@
         Reader.pause(); Speech.speak(b.dataset.say);
       }));
       $$('[data-learn]', body).forEach(b => b.addEventListener('click', () => {
-        const on = Store.toggleWord(s.id, s.vocab[+b.dataset.learn]);
-        toast(on ? '단어장에 기록했어요' : '기록에서 뺐어요');
+        const v = s.vocab[+b.dataset.learn];
+        const on = Store.toggleWord(s.id, v);
+        if (on) Pet.onWord(Store.wordKey(s.id, v.word), on); else toast('기록에서 뺐어요');
         this.draw();
       }));
       $$('.opt', body).forEach(b => b.addEventListener('click', () => {
         const r = Store.rec(s.id); r.quiz = r.quiz || {};
         r.quiz[+b.dataset.q] = +b.dataset.o; Store.save();
         const y = scrollY; this.draw(); window.scrollTo(0, y);
+        if (Object.keys(r.quiz).length === s.quiz.length) {
+          Pet.onQuiz(s, s.quiz.filter((q, i) => r.quiz[i] === q.answer).length, s.quiz.length);
+        }
       }));
       const reset = $('#quizReset', body);
       reset && reset.addEventListener('click', () => { Store.rec(s.id).quiz = {}; Store.save(); this.draw(); });
