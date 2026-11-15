@@ -45,7 +45,7 @@ main:focus { outline: none; }
   position: sticky; top: 0; z-index: 30;
   display: flex; align-items: center; justify-content: space-between;
   gap: 12px;
-  padding: 12px clamp(16px, 4vw, 40px);
+  padding: calc(12px + env(safe-area-inset-top)) max(clamp(16px, 4vw, 40px), env(safe-area-inset-right)) 12px max(clamp(16px, 4vw, 40px), env(safe-area-inset-left));
   background: rgba(251, 247, 240, .88);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
