@@ -1,9 +1,9 @@
 // 오프라인용 캐시 — 파일을 바꾸면 VERSION 숫자만 올리면 됨
-const VERSION = 'mlel-v1';
+const VERSION = 'mlel-v2';
 const FILES = [
   './', './index.html', './css/style.css', './js/app.js', './data/library.js',
   './data/stories/daily-lemon-tree.js', './data/stories/romance-notes.js', './data/stories/adventure-lighthouse.js',
-  './data/stories/fantasy-clockmaker.js', './data/stories/mystery-umbrella.js', './data/stories/business-coffee-cart.js',
+  './data/stories/fantasy-clockmaker.js', './data/stories/mystery-umbrella.js', './data/stories/business-coffee-cart.js', './data/stories/business-recall.js',
   './data/stories/history-28-letters.js', './data/stories/psychology-envelope.js', './data/stories/science-optimizer.js',
   './data/stories/society-last-speaker.js', './icons/icon-180.png', './icons/icon-192.png', './manifest.webmanifest'
 ];
