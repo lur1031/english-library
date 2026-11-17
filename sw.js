@@ -1,11 +1,11 @@
 // 오프라인용 캐시 — 파일을 바꾸면 VERSION 숫자만 올리면 됨
-const VERSION = 'mlel-v3';
+const VERSION = 'mlel-v4';
 const FILES = [
   './', './index.html', './css/style.css', './js/app.js', './js/pet.js', './data/library.js',
   './data/stories/daily-lemon-tree.js', './data/stories/romance-notes.js', './data/stories/adventure-lighthouse.js',
   './data/stories/fantasy-clockmaker.js', './data/stories/mystery-umbrella.js', './data/stories/business-coffee-cart.js', './data/stories/business-recall.js',
   './data/stories/history-28-letters.js', './data/stories/psychology-envelope.js', './data/stories/science-optimizer.js',
-  './data/stories/society-last-speaker.js', './icons/icon-180.png', './icons/icon-192.png', './manifest.webmanifest'
+  './data/stories/society-last-speaker.js', './data/stories/romance-words-we-learned.js', './data/stories/daily-night-shift.js', './data/stories/adventure-whiteout.js', './data/stories/science-seeds-under-ice.js', './data/stories/psychology-spotlight.js', './data/stories/society-free-fridge.js', './data/stories/fantasy-unwritten-books.js', './data/stories/mystery-silent-witness.js', './data/stories/history-longitude.js', './icons/icon-180.png', './icons/icon-192.png', './manifest.webmanifest'
 ];
 self.addEventListener('install', e => { e.waitUntil(caches.open(VERSION).then(c => c.addAll(FILES))); self.skipWaiting(); });
 self.addEventListener('activate', e => {

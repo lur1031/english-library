@@ -292,7 +292,7 @@
           ${['All', 'Beginner', 'Intermediate', 'Advanced'].map(f => `<button class="chip" data-f="${f}">${f === 'All' ? '전체' : f}</button>`).join('')}
         </div>
         <div class="story-list" id="storyList"></div>
-        ${all.length < 3 ? `<p class="section-sub" style="margin-top:22px;text-align:center">✦ 이 책장은 계속 채워질 예정이에요 — <code>data/stories/</code>에 파일을 추가하면 자동으로 꽂혀요.</p>` : ''}
+        ${all.length < 3 ? `<p class="section-sub" style="margin-top:22px;text-align:center">✦ 이 책장은 계속 채워질 예정이에요.</p>` : ''}
       </div></div>`;
     $$('.filters .chip').forEach(ch => ch.addEventListener('click', () => { catFilter = ch.dataset.f; draw(); }));
     draw();
